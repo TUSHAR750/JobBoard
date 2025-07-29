@@ -1,8 +1,23 @@
 const express = require("express");
 const router = express.Router();
+const cors = require("cors");
 const Job = require("../models/Job");
 
 const ADMIN_TOKEN = process.env.ADMIN_TOKEN || "admin123";
+
+
+app.use(cors({
+  origin: "https://deft-sunburst-1ccb5e.netlify.app",
+  methods: ["GET", "POST", "DELETE", "PUT"],
+  credentials: true
+}));
+
+app.use(express.json());
+
+// your routes
+app.get("/api/jobs", (req, res) => {
+  res.json([...]); // your jobs data
+});
 
 // 🔐 Middleware
 function verifyAdmin(req, res, next) {
