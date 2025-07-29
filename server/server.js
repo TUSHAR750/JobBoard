@@ -33,13 +33,13 @@ const Job = mongoose.model('Job', new mongoose.Schema({
 }, { timestamps: true }));
 
 // GET all jobs
-app.get('/routes/jobs', async (req, res) => {
+app.get('/api/jobs', async (req, res) => {
   const jobs = await Job.find().sort({ createdAt: -1 });
   res.json(jobs);
 });
 
 // POST new job
-app.post('/routes/jobs', verifyAdminToken, async (req, res) => {
+app.post('/api/jobs', verifyAdminToken, async (req, res) => {
   try {
     const job = new Job(req.body);
     await job.save();
@@ -50,7 +50,7 @@ app.post('/routes/jobs', verifyAdminToken, async (req, res) => {
 });
 
 // DELETE job
-app.delete('/routes/jobs/:id', verifyAdminToken, async (req, res) => {
+app.delete('/api/jobs/:id', verifyAdminToken, async (req, res) => {
   try {
     await Job.findByIdAndDelete(req.params.id);
     res.json({ message: 'Job deleted' });
