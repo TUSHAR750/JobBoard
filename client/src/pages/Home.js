@@ -12,7 +12,7 @@ function Home() {
 
   const fetchJobs = useCallback(async () => {
   try {
-    const res = await axios.get(`${process.env.REACT_APP_SERVER_URL}/api/jobs`);
+    const res = await axios.get(`https://jobboard-6ej2.onrender.com/api/jobs`);
     setJobs(res.data);
   } catch (error) {
     console.error("Error fetching jobs", error);
