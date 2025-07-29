@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Optional: Apply a clean default font globally */
+body {
+  font-family: 'Inter', sans-serif;
+  @apply bg-gray-100 text-gray-800;
+}
+
+/* Optional utility classes you want to reuse can go here */
+.btn {
+  @apply inline-block px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition;
+}
+
+.card {
+  @apply bg-white border rounded-xl p-5 shadow-sm hover:shadow-md transition;
+}
