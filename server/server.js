@@ -12,10 +12,8 @@ app.use(express.json());
 const mongoURI = process.env.MONGO_URI;
 
 // Connect to MongoDB outside request handlers
-mongoose.connect(mongoURI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-}).then(() => console.log("MongoDB connected"))
+mongoose.connect(process.env.MONGO_URI)
+.then(() => console.log("MongoDB connected"))
   .catch((err) => console.error("MongoDB connection error:", err));
 
 // Middleware to verify admin token
