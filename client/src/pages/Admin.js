@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-
+import { useEffect, useState , useCallback } from "react";
+import axios from "axios";
 const Admin = () => {
   const [form, setForm] = useState({
     title: "",
@@ -20,17 +20,16 @@ const Admin = () => {
   // Keep this consistent with your App.js or use .env
   const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 
-  const getJobs = () => {
-    fetch(`${REACT_APP_API_URL}/api/jobs`)
-      .then((res) => res.json())
-      .then((data) => setJobs(data));
-  };
+  const fetchJobs = useCallback(() => {
+    axios
+      .get(`${process.env.REACT_APP_SERVER_URL}/api/jobs`)
+      .then((res) => setJobs(res.data))
+      .catch((err) => console.error("Error fetching jobs", err));
+  }, []); 
 
   useEffect(() => {
-    if (isAuthenticated) {
-      getJobs();
-    }
-  }, [isAuthenticated]);
+    fetchJobs();
+  }, [fetchJobs]);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -59,7 +58,7 @@ const Admin = () => {
       lastDateToApply: "",
       jobField: "",
     });
-    getJobs();
+    setJobs();
   };
 
   const handleDelete = async (id) => {
@@ -69,7 +68,7 @@ const Admin = () => {
         Authorization: token,
       },
     });
-    getJobs();
+    setJobs();
   };
 
   // Token check screen

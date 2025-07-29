@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState , useCallback } from "react";
 import axios from "axios";
 
 function Home() {
@@ -7,21 +7,22 @@ function Home() {
   const [fieldFilter, setFieldFilter] = useState("");
   const [experienceFilter, setExperienceFilter] = useState("");
 
-  const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
+  // const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 
 
-  const fetchJobs = async () => {
-    try {
-      const response = await axios.get(`${REACT_APP_API_URL}/api/jobs`);
-      setJobs(response.data);
-    } catch (error) {
-      console.error("Error fetching jobs", error);
-    }
-  };
+  const fetchJobs = useCallback(async () => {
+  try {
+    const res = await axios.get(`${process.env.REACT_APP_SERVER_URL}/api/jobs`);
+    setJobs(res.data);
+  } catch (error) {
+    console.error("Error fetching jobs", error);
+  }
+}, []); // ✅ No dependencies
 
-  useEffect(() => {
-    fetchJobs();
-  }, []);
+useEffect(() => {
+  fetchJobs();
+}, [fetchJobs]); // ✅ Warning resolved
+
 
   const filteredJobs = jobs.filter((job) => {
     return (
