@@ -12,13 +12,6 @@ app.use(cors({
   credentials: true
 }));
 
-app.use(express.json());
-
-// your routes
-app.get("/api/jobs", (req, res) => {
-  res.json([...]); // your jobs data
-});
-
 // 🔐 Middleware
 function verifyAdmin(req, res, next) {
   const token = req.headers.authorization;

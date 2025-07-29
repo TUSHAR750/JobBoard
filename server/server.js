@@ -65,3 +65,5 @@ app.delete('/api/jobs/:id', verifyAdminToken, async (req, res) => {
 mongoose.connect(mongoURI)
   .then(() => app.listen(5000, () => console.log('Server running on http://localhost:5000')))
   .catch(err => console.error(err));
+
+module.exports = app;
