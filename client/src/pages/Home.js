@@ -7,10 +7,12 @@ function Home() {
   const [fieldFilter, setFieldFilter] = useState("");
   const [experienceFilter, setExperienceFilter] = useState("");
 
+  const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
+
 
   const fetchJobs = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/jobs");
+      const response = await axios.get(`${REACT_APP_API_URL}/api/jobs`);
       setJobs(response.data);
     } catch (error) {
       console.error("Error fetching jobs", error);

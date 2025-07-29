@@ -18,9 +18,10 @@ const Admin = () => {
   
   const ADMIN_TOKEN = process.env.ADMIN_TOKEN || "admin123";
   // Keep this consistent with your App.js or use .env
+  const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 
   const getJobs = () => {
-    fetch("http://localhost:5000/api/jobs")
+    fetch(`${REACT_APP_API_URL}/api/jobs`)
       .then((res) => res.json())
       .then((data) => setJobs(data));
   };
@@ -37,7 +38,7 @@ const Admin = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await fetch("http://localhost:5000/api/jobs", {
+    await fetch(`${REACT_APP_API_URL}/api/jobs`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -62,7 +63,7 @@ const Admin = () => {
   };
 
   const handleDelete = async (id) => {
-    await fetch(`http://localhost:5000/api/jobs/${id}`, {
+    await fetch(`${REACT_APP_API_URL}/api/jobs/${id}`, {
       method: "DELETE",
       headers: {
         Authorization: token,
