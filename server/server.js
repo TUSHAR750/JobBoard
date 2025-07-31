@@ -24,7 +24,7 @@ cron.schedule("0 0 * * *", async () => {
 });
 
 app.use(cors({
-  origin: ["http://localhost:3000"]
+  origin: ["http://localhost:3000","https://jobboard-yhmy.onrender.com"]
 }));
 app.use(express.json());
 
