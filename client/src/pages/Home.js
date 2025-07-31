@@ -19,7 +19,7 @@ const fetchJobs = useCallback(async () => {
     } catch (error) {
       console.error("Error fetching jobs", error);
     }
-  }, []); // ✅ No ESLint warning now
+  }, [BASE_URL]); // ✅ No ESLint warning now
 
   useEffect(() => {
     fetchJobs();
