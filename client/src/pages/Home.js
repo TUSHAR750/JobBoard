@@ -10,14 +10,14 @@ function Home() {
   // const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 
 
-  const fetchJobs = useCallback(async () => {
+ const fetchJobs = useCallback(async () => {
   try {
-    const res = await axios.get(`https://jobboard-6ej2.onrender.com/api/jobs`);
+    const res = await axios.get("http://localhost:5000/api/jobs"); // or use axiosInstance
     setJobs(res.data);
   } catch (error) {
     console.error("Error fetching jobs", error);
   }
-}, []); // ✅ No dependencies
+}, []);// ✅ No dependencies
 
 useEffect(() => {
   fetchJobs();
@@ -99,7 +99,7 @@ useEffect(() => {
 
               <div className="flex flex-wrap items-center gap-2 mb-2">
                 <span className="px-2 py-1 text-xs text-green-800 bg-green-100 rounded-full">
-                  Min Exp: {job.experience} yrs
+                  Min Exp: {job.experience ? `${job.experience} yrs` : "N/A"}
                 </span>
                 <span className="px-2 py-1 text-xs text-purple-800 bg-purple-100 rounded-full">
                   Field: {job.jobField}
@@ -116,7 +116,7 @@ useEffect(() => {
               </p>
 
               <p className="text-sm text-gray-500">
-                Last Date: {job.lastDateToApply}
+                Last Date: {job.lastDateToApply || "N/A"}
               </p>
 
               {/* <p className="mt-2 text-sm text-gray-800 line-clamp-4">{job.description}</p> */}

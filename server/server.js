@@ -1,20 +1,43 @@
+require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 
+const jobsRoute = require("./routes/jobs");
+
 const app = express();
 
+const cron = require("node-cron");
+const Job = require("./models/Job");
+
+// Run every day at midnight
+cron.schedule("0 0 * * *", async () => {
+  const today = new Date().toISOString().split("T")[0];
+  try {
+    const result = await Job.deleteMany({
+      lastDateToApply: { $lt: today }
+    });
+    console.log(`🧹 Deleted ${result.deletedCount} expired jobs`);
+  } catch (err) {
+    console.error("🔥 Cron job error:", err);
+  }
+});
+
 app.use(cors({
-  origin: ["https://deft-sunburst-1ccb5e.netlify.app"]
+  origin: ["http://localhost:3000"]
 }));
 app.use(express.json());
 
 const mongoURI = process.env.MONGO_URI;
 
 // Connect to MongoDB outside request handlers
-mongoose.connect(process.env.MONGO_URI)
+mongoose.connect(mongoURI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
 .then(() => console.log("MongoDB connected"))
-  .catch((err) => console.error("MongoDB connection error:", err));
+.catch((err) => console.error("MongoDB connection error:", err));
+
 
 // Middleware to verify admin token
 const verifyAdminToken = (req, res, next) => {
@@ -25,19 +48,11 @@ const verifyAdminToken = (req, res, next) => {
   next();
 };
 
-// Job model
-const Job = mongoose.model("Job", new mongoose.Schema({
-  title: String,
-  company: String,
-  location: String,
-  type: String,
-  passout: Number,
-  link: String,
-  description: String,
-  experience: String,
-  lastDateToApply: String,
-  jobField: String,
-}, { timestamps: true }));
+
+const jobRoutes = require("./routes/jobs"); 
+
+app.use("/api/jobs", jobRoutes);
+
 
 // Routes
 app.get("/api/jobs", async (req, res) => {
@@ -49,15 +64,20 @@ app.get("/api/jobs", async (req, res) => {
   }
 });
 
-app.post("/api/jobs", verifyAdminToken, async (req, res) => {
+app.post("/api/jobs", async (req, res) => {
   try {
-    const job = new Job(req.body);
+    console.log("Received job data:", req.body);
+
+    const job = new Job(req.body);  // ✅ FIXED: use Job, not JobModel
     await job.save();
-    res.status(201).json(job);
+
+    res.status(201).json({ message: "Job added successfully" });
   } catch (err) {
-    res.status(500).json({ message: "Failed to add job" });
+    console.error("🔥 Error in POST /api/jobs:", err.message);
+    res.status(500).json({ message: "Server error", error: err.message });
   }
 });
+
 
 app.delete("/api/jobs/:id", verifyAdminToken, async (req, res) => {
   try {
@@ -68,6 +88,10 @@ app.delete("/api/jobs/:id", verifyAdminToken, async (req, res) => {
   }
 });
 
-// ❌ DO NOT use app.listen()
-// ✅ Export app for Vercel
-module.exports = app;
+if (process.env.NODE_ENV !== "production") {
+  const PORT = process.env.PORT || 5000;
+  app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
+  });
+}
+
