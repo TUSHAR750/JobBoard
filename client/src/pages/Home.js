@@ -8,20 +8,22 @@ function Home() {
   const [experienceFilter, setExperienceFilter] = useState("");
 
   // const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
+  const BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
 
- const fetchJobs = useCallback(async () => {
-  try {
-    const res = await axios.get("http://localhost:5000/api/jobs"); // or use axiosInstance
-    setJobs(res.data);
-  } catch (error) {
-    console.error("Error fetching jobs", error);
-  }
-}, []);// ✅ No dependencies
 
-useEffect(() => {
-  fetchJobs();
-}, [fetchJobs]); // ✅ Warning resolved
+const fetchJobs = useCallback(async () => {
+    try {
+      const res = await axios.get(`${BASE_URL}/api/jobs`);
+      setJobs(res.data);
+    } catch (error) {
+      console.error("Error fetching jobs", error);
+    }
+  }, []); // ✅ No ESLint warning now
+
+  useEffect(() => {
+    fetchJobs();
+  }, [fetchJobs]);
 
 
   const filteredJobs = jobs.filter((job) => {

@@ -19,13 +19,15 @@ const Admin = () => {
 
   // ✅ Use REACT_APP_ADMIN_TOKEN for security and consistency
   const ADMIN_TOKEN = process.env.REACT_APP_ADMIN_TOKEN || "admin123";
+  const BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
 
   const fetchJobs = useCallback(() => {
     axios
-      .get("http://localhost:5000/api/jobs")
+      .get(`${BASE_URL}/api/jobs`)
       .then((res) => setJobs(res.data))
       .catch((err) => console.error("Error fetching jobs", err));
-  }, []);
+  }, [BASE_URL]);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -41,7 +43,7 @@ const Admin = () => {
     e.preventDefault();
     try {
       await axios.post(
-        "http://localhost:5000/api/jobs",
+        `${BASE_URL}/api/jobs`,
         {
           ...form,
           passout: form.passout.split(",").map(Number),
@@ -70,7 +72,7 @@ const Admin = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/jobs/${id}`, {
+      await axios.delete(`${BASE_URL}/api/jobs/${id}`, {
         headers: {
           Authorization: token,
         },
