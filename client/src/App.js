@@ -44,13 +44,16 @@ function App() {
 
   return (
     <Router>
-      <nav className="sticky top-0 z-50 flex items-center justify-between p-4 px-8 bg-white shadow-md">
-        <Link to="/" className="text-2xl font-bold text-blue-600 hover:underline">JobApp</Link>
-        <div className="space-x-4">
-          <Link to="/" className="text-gray-700 hover:text-blue-600">Home</Link>
-          <Link to="/admin" className="text-gray-700 hover:text-blue-600">Admin</Link>
-        </div>
-      </nav>
+      <nav className="sticky top-0 z-50 flex items-center justify-between p-4 px-10 bg-white shadow-md">
+  <Link to="/" className="flex items-center gap-2">
+    <img src="/JobBoardLogo.png" alt="JobBoard Logo" className="object-contain w-20 h-15" />
+  </Link>
+  
+  <div className="space-x-4">
+    <Link to="/" className="text-gray-700 hover:text-blue-600">Home</Link>
+    <Link to="/admin" className="text-gray-700 hover:text-blue-600">Admin</Link>
+  </div>
+</nav>
 
       <Routes>
         <Route path="/" element={<Home />} />

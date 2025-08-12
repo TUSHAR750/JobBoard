@@ -33,6 +33,37 @@ const fetchJobs = useCallback(async () => {
       (experienceFilter === "" || Number(job.experience) >= Number(experienceFilter))
     );
   });
+  useEffect(() => {
+  // Create settings script
+  const settingsScript = document.createElement("script");
+  settingsScript.type = "text/javascript";
+  settingsScript.innerHTML = `
+    atOptions = {
+      'key' : '79c16e377d2e6cdb86ae8005898a04e2',
+      'format' : 'iframe',
+      'height' : 300,
+      'width' : 160,
+      'params' : {}
+    };
+  `;
+
+  // Create loader script
+  const loaderScript = document.createElement("script");
+  loaderScript.type = "text/javascript";
+  loaderScript.src = "//www.highperformanceformat.com/79c16e377d2e6cdb86ae8005898a04e2/invoke.js";
+
+  // Append both to ad container
+  const container = document.getElementById("highperformance-ad");
+  if (container) {
+    container.appendChild(settingsScript);
+    container.appendChild(loaderScript);
+  }
+
+  return () => {
+    if (container) container.innerHTML = ""; // cleanup on unmount
+  };
+}, []);
+
 
   return (
     <div className="flex items-start justify-center min-h-screen px-4 py-10 bg-gray-100">
@@ -87,7 +118,7 @@ const fetchJobs = useCallback(async () => {
           </select>
 
         </div>
-
+      
         {/* Job Cards */}
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           {filteredJobs.map((job) => (
@@ -135,6 +166,12 @@ const fetchJobs = useCallback(async () => {
               )}
             </div>
           ))}
+        </div>
+      </div>{/* Sidebar Ad */}
+      <div className="sticky p-8 top-10">
+        <div id="highperformance-ad" className="sticky top-10" style={{ textAlign: 'center' }}>
+          {/* className="sticky p-4 bg-white rounded-lg shadow top-10" */}
+          {/* Ad loads here */}
         </div>
       </div>
     </div>
