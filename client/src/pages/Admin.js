@@ -18,7 +18,7 @@ const Admin = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   // ✅ Use REACT_APP_ADMIN_TOKEN for security and consistency
-  const ADMIN_TOKEN = process.env.REACT_APP_ADMIN_TOKEN || "admin123";
+  const ADMIN_TOKEN = process.env.REACT_APP_ADMIN_TOKEN || "bob@7648";
   const BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
 
